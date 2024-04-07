@@ -22,24 +22,22 @@ stages:
     pool: myAgentPool
     steps:    
     - script: |
-    
+        sudo apt update
+        sudo apt install -y zip
         export PATH=$HOME/.local/bin:$PATH
         python3.9 -m pip install -r requirements.txt
+      displayName: 'Install zip and requirements.txt'
       workingDirectory: $(projectRoot)
-      displayName: 'Step - Install requirements.txt'
 
     - task: ArchiveFiles@2
       displayName: 'Step - Archive files'
       inputs:
         rootFolderOrFile: '$(projectRoot)'
         includeRootFolder: false
-        
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
         replaceExistingArchive: true
-        
 
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+    - upload: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
       displayName: 'Upload package'
       artifact: drop
-      
- 
