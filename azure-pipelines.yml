@@ -22,6 +22,7 @@ stages:
     pool: myAgentPool
     steps:    
     - script: |
+    
         export PATH=$HOME/.local/bin:$PATH
         python3.9 -m pip install -r requirements.txt
       workingDirectory: $(projectRoot)
@@ -32,9 +33,10 @@ stages:
       inputs:
         rootFolderOrFile: '$(projectRoot)'
         includeRootFolder: false
-        archiveType: zip
+        
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
         replaceExistingArchive: true
+        
 
     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
       displayName: 'Upload package'
